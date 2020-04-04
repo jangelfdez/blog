@@ -1,0 +1,31 @@
+# Change 'comments' to true for Disqus comments
+disqus:
+  comments: false
+  disqus_shortname: 'https-lenpaul-github-io-lagrange'
+
+# If you are not using Google Analytics, please change 'google-ID' to an empty string
+google-ID: ''
+
+menu:
+- {name: 'Sobre mí', path: 'menu', url: 'about.html'}
+- {name: 'Artículos', path: 'menu', url: 'writing.html'}
+- {name: 'Contacto', path: 'menu', url: 'contact.html'}
+
+# Available social icons are powered by Font Awesome, so you can use any icon that they offer
+social:
+- {icon: 'github', link: 'https://www.github.com/jangelfdez'}
+- {icon: 'twitter', link: 'https://twitter.com/jangelfdez'}
+- {icon: 'linkedin', link: 'http://www.linkedin.com/in/jangelfdez/'}
+- {icon: 'rss-square', link: '/feed.xml'}
+# - {icon: 'rss-square', link: '/rss-feed.xml'}
+
+# Customize site text
+pagination:
+  next_page: 'Nuevos'
+  previous_page: 'Antiguos'
+
+sharing_button_prompt: 'Comparte'
+
+related_posts: 'Puede interesarte también:'
+
+post_date_prefix: 'Escrito el '
