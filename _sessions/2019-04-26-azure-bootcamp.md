@@ -5,6 +5,7 @@ author: "José Ángel Fernández"
 categories: sesiones
 tags: [azure, hpc]
 image: bigcompute6.jfif
+date: 2019-04-26
 ---
 Un año más se ha celebrado en Madrid [una nueva edición del Global Azure Bootcamp](http://www.azurebootcamp.es/). Este año el reto científico ha estado auspiciado por el Instituto de Astrofísica de Canarias (IAC). El objetivo era *“examinar los datos de la misión TESS (“Transiting Exoplanet Survey Satellite”), que fue lanzada en 2018 para la búsqueda de exoplanetas alrededor de las estrellas. El satélite está continuamente obteniendo imágenes de las estrellas con el único objetivo de buscar cambios en la intensidad de luz al pasar los planetas por delante de las mismas”*
 
