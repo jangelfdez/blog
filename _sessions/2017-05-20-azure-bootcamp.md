@@ -3,7 +3,7 @@ name: Winter IoT coming! Auroras Boreales en tu casa directamente desde el polo
 event: Global Azure Bootcamp
 author: "José Ángel Fernández"
 categories: sesiones
-tags: [azure, storage]
+tags: [azure, iot]
 image: auroraborealis.jfif
 date: 2017-05-20
 ---
