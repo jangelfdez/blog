@@ -83,3 +83,6 @@ TenantId\_s|VirtualdomWVD
 Type|WVDActivityV1\_CL
 
 Si tenéis algunas consultas ya creada que sean útiles, no dudéis en compartirlas. De esta manera, será más fácil reutilizar el conocimiento entre todos.
+
+*Photo by form [PxHere](https://pxhere.com/en/photo/935315)*
+
