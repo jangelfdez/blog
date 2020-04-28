@@ -82,6 +82,36 @@ Status\_s|Completed
 TenantId\_s|VirtualdomWVD
 Type|WVDActivityV1\_CL
 
+Os dejo algunas consultas que puedan servir para consultar este tipo de estadísticas de uso:
+
+```bash
+// Number of sessions, both Desktop 
+// and Remote Apps, per user
+WVDActivityV1_CL 
+| where ResourceType == "DESKTOP" or 
+    ResourceType == "RAIL"
+| extend Duration = EndTime_t - StartTime_t 
+| project SessionHostName_s, UserName_s, 
+    Duration, StartTime_t, EndTime_t    
+| summarize Number_Sessions = count() by UserName_s
+
+// Desktop usage by user, application name, 
+// session host and duration of the session
+WVDActivityV1_CL 
+| where ResourceType == "DESKTOP"
+| extend Duration = EndTime_t - StartTime_t 
+| project SessionHostName_s , UserName_s, 
+    Duration, StartTime_t, EndTime_t      
+
+// Remote Application usage by user, application name, 
+// session host and duration of the session
+WVDActivityV1_CL
+| where ResourceType == "RAIL"
+| extend Duration = EndTime_t - StartTime_t 
+| project SessionHostName_s, UserName_s, Duration,  
+    ResourceAlias_s, StartTime_t, EndTime_t   
+```
+
 Si tenéis algunas consultas ya creada que sean útiles, no dudéis en compartirlas. De esta manera, será más fácil reutilizar el conocimiento entre todos.
 
 *Photo by form [PxHere](https://pxhere.com/en/photo/935315)*
