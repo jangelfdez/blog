@@ -1,0 +1,45 @@
+---
+layout: post
+title: "Azure Monitor Logs, referencia de tablas útiles a la hora de monitorizar máquinas virtuales"
+author: "José Ángel Fernández"
+categories: blog
+tags: [azure, vm, monitorización, logs]
+image: monitoring.jfif
+---
+
+En el artículo de [*"Opciones de monitorización de máquinas virtuales en Azure*"](https://joseangelfernandez.es/blog/monitorizacion-azure-vm.html) recogía un listado de los diferentes servicios disponibles en Azure para monitorizar y controlar los aspectos relevantes de una máquina virtual y el software instalado en ella. Muchos de estos servicios utilizan como repositorio de datos un área de trabajo de *Log Analytics* donde almacenan la información capturada en una estructura de tablas al más puro estilo base de datos tradicional. 
+
+Debido a una pregunta de un cliente, he estado revisando estos días en más detalle qué tablas son las más interesantes para hacer consultas sobre ellas y a qué servicio corresponden. Antes el proceso era máss complicado; sin embargo, he visto que en la documentación de Azure Monitor ya se encuentra disponible más detalles tanto de las tablas como de las estructuras de datos que contienen. Es posible consultarlo a través de [la referencia de Azure Monitor](https://docs.microsoft.com/en-us/azure/azure-monitor/reference/).
+
+El número de tablas que aparecerán en tu área de trabajo es proporcional al número de soluciones que tengas integradas con Azure Monitor. No solo las de las soluciones proporcionadas por Azure, sino que también es posible disponer de tablas personales si estamos capturando [logs personalizados](https://docs.microsoft.com/en-us/azure/azure-monitor/platform/data-sources-custom-logs) que extienden las capacidades nativas de la plataforma. 
+
+Dicho esto, si vais a necesitar consultar datos de máquinas virtuales que hagan uso de Azure Monitor a través de la opción disponible de captura de *Logs* y de *VM Insights*, estas son las tablas relevantes para vosotros con una descripción de los datos que continenen:
+
+- **Datos iniciales**: estas son las tablas disponibles dentro de un espacio de trabajo de *Log Analytics* tras ser creado:
+    - ***[Operation](https://docs.microsoft.com/en-us/azure/azure-monitor/reference/tables/operation)***: registro de actividades que afectan al servicio de *Log Analytics* realizadas por parte del usuario o como respuesta a notificaciones del propio servicio.
+    - ***[Usage](https://docs.microsoft.com/en-us/azure/azure-monitor/reference/tables/usage)***: mantiene un registro horario del tamaño de las diferentes tablas existentes dentro del área de trabajo de *Log Analytics*. Es una de las recomendades de monitorizar para asegurarnos que no estamos consumiendo más de lo esperado. La opción de *Usage and estimated costs* dentro del portal extrae los datos de aquí.
+    - ***ReservedCommonFields***: no se encuentra documentada y en mi área de trabajo se encuentra vacía. No he podido encontrar referencia tampoco a su funcionalidad.
+    - ***[Alert](https://docs.microsoft.com/en-us/azure/azure-monitor/reference/tables/alert)***: registro de las alertas que se han generado por las reglas configuradas dentro de Azure Monitor o las recogidas a través de *System Center Operations Manager*.
+    - ***[ComputerGroup](https://docs.microsoft.com/en-us/azure/azure-monitor/reference/tables/computergroup)***: colección de ordenadores sobre las que se puede luego hacer filtrado de las consultas dentro de los logs. Incluye los detalles de los ordenadores dentro configurados dentro de cada grupo.
+    - ***AppCenterError***: no se encuentra documentada y en mi área de trabajo se encuentra vacía. No he podido encontrar referencia tampoco a su funcionalidad. Es posible que sea una herencia del servicio de *Visual Studio App Center*.
+
+- **Incorporación de un máquina virtual como fuente de datos**: tras activar a través del espacio de trabajo de *Log Analytics* una o más máquinas virtuales como fuente de datos, las siguiente tablas se añaden a las existentes por defecto. Esta información es recogida por la extensión *Microsoft.EnterpriseCloud.Monitoring.MicrosoftMonitoringAgent*
+    - ***[AzureActivity](https://docs.microsoft.com/en-us/azure/azure-monitor/reference/tables/azureactivity)***: recoge los datos del log de actividades de Azure si se ha configurado a nivel de la suscripción. Permite registrar todas las operaciones realizadas contra la API de Azure.
+    - ***[AzureMetrics](https://docs.microsoft.com/en-us/azure/azure-monitor/reference/tables/azuremetrics)***: recoge la información de métricas emitidas por los servicios de Azure que controlan su estado de salud y el rendimiento. En el caso de máquinas virtuales se utilizará fundamentalmente la tabla de *Perf* con los contadores de rendimiento que se configuren.
+    - ***[ETWEvents](https://docs.microsoft.com/en-us/azure/azure-monitor/reference/tables/etwevent)***: recoge los registros ETW de máquinas Windows configurados a través de las opciones de fuentes de datos de *Log Analytics*. 
+    - ***[Event](https://docs.microsoft.com/en-us/azure/azure-monitor/reference/tables/event)***: listado de los eventos configurados para ser recogidos del log de Windows. Práctico para buscar códigos de errores en aplicaciones o en el sistema operativo.
+    - ***[Heartbeat](https://docs.microsoft.com/en-us/azure/azure-monitor/reference/tables/heartbeat)***: información sobre el estado de salud de los agentes en las máquinas registradas dentro de *Log Analytics*. Recoge información una vez por minuto. Es la forma más sencilla de comprobar que todas las máquinas están enviando la información correctamente y no existe ningún error.
+    - ***[Perf](https://docs.microsoft.com/en-us/azure/azure-monitor/reference/tables/perf)***: recolección de los contadores de rendimiento configurados tanto para Windows como para Linux. Una de las principales tablas para realizar las consultas sobre el rendimiento de nuestro entorno.
+    - ***[Syslog](https://docs.microsoft.com/en-us/azure/azure-monitor/reference/tables/syslog)***: similar a la tabla *Events* anterior; en esta se recogen los eventos de Linux.
+    - ***[W3CIISlog](https://docs.microsoft.com/en-us/azure/azure-monitor/reference/tables/w3ciislog)***: si en nuestras máquinas virtuales Windows estamos usando IIS como servidor de páginas web, es posible recolectar sus logs y procesarlos dentro de esta tabla.
+
+- **Activación de Azure Monitor for VMs**: si finalmente queremos más detalles sobre nuestras mñáquinas virtuales y activamos en ellas el servicio de [Insights](https://docs.microsoft.com/en-us/azure/azure-monitor/insights/vminsights-overview) se incorporarán las siguientes tablas extras. Esta información es recogida por la extensión *Microsoft.EnterpriseCloud.Monitoring.MicrosoftMonitoringAgent* y *Microsoft.Azure.Monitoring.DependencyAgent.DependencyAgentWindows* o su equivalente para Linux: 
+    - ***[InsightsMetrics](https://docs.microsoft.com/en-us/azure/azure-monitor/reference/tables/insightsmetrics)***: información de las métricas de rendimiento extra recolectadas por la extensión de *Azure Monitor for VMs* tanto para máquinas virtuales como para contenedores.
+    - ***[VMBoundPort](https://docs.microsoft.com/en-us/azure/azure-monitor/reference/tables/vmboundport)***: empleada por *Service Map* para alamcenarr las conexiones abiertas en la máquina monitorizada y registrar con quién se comunica. La información es capturada por el agente de monitorización de dependencias.
+    - ***[VMComputer](https://docs.microsoft.com/en-us/azure/azure-monitor/reference/tables/vmcomputer)***: información de inventariado sobre la máquina virtual donde se está ejecutando el agente y empleada por *Service Map* para mostrar los detalles en el portal. La información es capturada por el agente de monitorización de dependencias.
+    - ***[VMConnection](https://docs.microsoft.com/en-us/azure/azure-monitor/reference/tables/vmconnection)***: empleada por *Service Map* para almacenar la cantidad de tráfico para las conexiones entrantes y salientes. La información es capturada por el agente de monitorización de dependencias.
+    - ***[VMPorcess](https://docs.microsoft.com/en-us/azure/azure-monitor/reference/tables/vmprocess)***: empleada por *Service Map* para almacenar la información sobre los procesos en ejecucción dentro de la máquina virtual. La información es capturada por el agente de monitorización de dependencias.
+
+Por lo tanto, como veis no sólo es importante conocer las opciones de monitorización de las que dispone Azure sino que también es necesario saber dónde se guarda esa información dentro del repositorio de *Azure Monitor Logs* para poder realizar nuestras consultas a través de *Log Analytics* o las nuevas funcionalidades con los *Workbooks*. 
+
+Si estáis empleando otros servicios, toda la información la tenéis como indicaba antes en la [página de reference de datos de Azure Monitor](https://docs.microsoft.com/en-us/azure/azure-monitor/reference/)
