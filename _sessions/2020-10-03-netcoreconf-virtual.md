@@ -4,7 +4,7 @@ event: NetCoreConf
 author: "José Ángel Fernández"
 categories: sesiones
 tags: [azure, infraestructura]
-image: servers.jfif
+image: moving.jfif
 date: 2020-10-03
 ---
 
