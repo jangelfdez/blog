@@ -12,6 +12,6 @@ Si el movimiento de tus aplicaciones web hacia Azure es algo que tienes en mente
 
 El objetivo era enseñar las herramientas que proporciona de forma integrada Azure Migrate para mover tanto las aplicaciones como los datos desde donde estén desplegadas hacia Azure Web Apps y Azure SQL. Algo disponible también para otros escenarios como PHP o Java. 
 
-Si te la perdisteis, ya la tienes disponible para verla bajo demanda.
+Si os la perdisteis, ya la tienes disponible para verla bajo demanda.
 
 <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/F1zLH4nnjLI" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
