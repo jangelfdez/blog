@@ -140,6 +140,9 @@ hr {
 
 .post-container {
   margin-bottom: 4rem;
+  
+  align-items: center;
+  justify-content: center;
 }
 
 .posts {
@@ -174,6 +177,16 @@ hr {
 
 .related-posts a {
   text-decoration: none;
+}
+
+/*
+  Books
+ */
+
+.books-grid {
+  display: inline-block;
+  width: 180px;
+  margin: 10px;
 }
 
 /*

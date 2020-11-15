@@ -1,0 +1,19 @@
+---
+layout: default
+title: Books
+---
+
+<p> Muchos son los libros leídos que poco a poco nos hacen ver el mundo con otros ojos y nos aportan nuevas ideas para complementar aquello que ya sabemos. Esta es una lista de los que he leído recientemente. </p>
+
+<p> Si tienes alguna sugerencia que crees que me puede interesar, no dudes en mandarme un mensaje <a href="https://twitter.com/intent/tweet?text=%40jangelfdez">a través de Twitter</a> </p>
+
+{% for book in site.books %}
+<div class="books-grid">
+  <div class="thumbnail-container">
+    <img src="{{ site.github.url | replace: 'http://', '//' }}/assets/img/{{ book.image }}">
+  </div>
+  <p>
+    <span class="post-date"><i class="fa fa-calendar" aria-hidden="true"></i> Leído en {{ book.date | date: "%D" }}       <i class="fa fa-clock-o" aria-hidden="true"></i></span>
+  </p>
+</div>
+{% endfor %}

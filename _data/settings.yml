@@ -10,6 +10,7 @@ menu:
 - {name: 'Sobre mí', path: 'menu', url: 'about.html'}
 - {name: 'Artículos', path: 'menu', url: 'writing.html'}
 - {name: 'Sesiones', path: 'menu', url: 'sessions.html'}
+- {name: 'Libros', path: 'menu', url: 'books.html'}
 - {name: 'Contacto', path: 'menu', url: 'contact.html'}
 
 

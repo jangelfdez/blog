@@ -31,6 +31,8 @@ author:              'José Ángel Fernández'
 collections: 
   sessions:
     output: true
+  books:
+    output: true
 
 defaults:
   - scope:
@@ -38,3 +40,8 @@ defaults:
       type: "sessions"
     values:
       layout: "session"
+  - scope:
+      path: ""
+      type: "books"
+    values:
+      layout: "books"
