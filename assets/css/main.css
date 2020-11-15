@@ -189,6 +189,14 @@ hr {
   margin: 10px;
 }
 
+.books-container {
+  max-width: 100%;
+  overflow: hidden;
+  border-radius: 5px;
+  margin-bottom: 25px;
+}
+
+
 /*
   Pagination
 */

@@ -7,13 +7,13 @@ title: Books
 
 <p> Si tienes alguna sugerencia que crees que me puede interesar, no dudes en mandarme un mensaje <a href="https://twitter.com/intent/tweet?text=%40jangelfdez">a través de Twitter</a> </p>
 
-{% for book in site.books %}
+{% for book in site.books reversed %}
 <div class="books-grid">
-  <div class="thumbnail-container">
+  <div class="books-container">
     <img src="{{ site.github.url | replace: 'http://', '//' }}/assets/img/{{ book.image }}">
   </div>
   <p>
-    <span class="post-date"><i class="fa fa-calendar" aria-hidden="true"></i> Leído en {{ book.date | date: "%D" }}       <i class="fa fa-clock-o" aria-hidden="true"></i></span>
+    <span class="post-date"><i class="fa fa-calendar" aria-hidden="true"></i> Leído en {{ book.date | date: "%Y" }}       <i class="fa fa-clock-o" aria-hidden="true"></i></span>
   </p>
 </div>
 {% endfor %}

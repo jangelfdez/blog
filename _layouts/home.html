@@ -15,7 +15,7 @@ title: Home
   {% endif %}
   <p>
     {{ post.content | strip_html | truncate: 400 }} <a href="{{ site.github.url | replace: 'http://', '//' }}{{ post.url }}">Leer más</a>
-    <span class="post-date"><i class="fa fa-calendar" aria-hidden="true"></i>  {{ post.date | date: "%D" }} - <i class="fa fa-clock-o" aria-hidden="true"></i> {% include read-time.html %}</span>
+    <span class="post-date"><i class="fa fa-calendar" aria-hidden="true"></i>  {{ post.date | date: "Publicado el %e/%m/%Y" }} - <i class="fa fa-clock-o" aria-hidden="true"></i> {% include read-time.html %}</span>
   </p>
 </div>
 {% endfor %}

@@ -3,7 +3,7 @@ layout: default
 title: Sessions
 ---
 
-{% for session in site.sessions %}
+{% for session in site.sessions reversed %}
 <div class="posts">
   <h1>
     <a href="{{ site.github.url | replace: 'http://', '//' }}{{ session.url }}">{{ session.name }}</a>
@@ -15,7 +15,7 @@ title: Sessions
   {% endif %}
   <p>
     {{ session.content | strip_html | truncate: 400 }} <a href="{{ site.github.url | replace: 'http://', '//' }}{{ session.url }}">Leer más</a>
-    <span class="post-date"><i class="fa fa-calendar" aria-hidden="true"></i>  {{ session.date | date: "%D" }} - <i class="fa fa-clock-o" aria-hidden="true"></i>{% include read-time.html %}</span>
+    <span class="post-date"><i class="fa fa-calendar" aria-hidden="true"></i> Presentada el {{ session.date | date: "%e/%m/%Y" }} - <i class="fa fa-clock-o" aria-hidden="true"></i>{% include read-time.html %}</span>
   </p>
 </div>
 {% endfor %}
