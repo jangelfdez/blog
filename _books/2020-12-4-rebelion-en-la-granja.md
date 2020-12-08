@@ -1,6 +1,6 @@
 ---
 name: Rebelión en la granja de George Orwell
 author: "José Ángel Fernández"
-image: rebeliongranja.jfif
+image: rebelionengranja.jfif
 date: 2020-11-26
 ---
