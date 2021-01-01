@@ -46,93 +46,101 @@ Veamos a continuación los detalles de ambos casos:
 
 #### Resolución analítica
 
-Comenzaremos en primer lugar para el caso de la regresión lineal simple. Como hemos visto anteriormente, la solución se puede representar de la siguiente manera:
+Obtendremos, en primer lugar, la resolución analítica para el caso más sencillo: la regresión lineal simple. Como hemos visto anteriormente en el artículo, ésta se puede representar de forma directa de la siguiente forma: 
 
 $$ Y = \beta_0 + \beta_1 X + \epsilon $$
 
-Si los datos que emplearemos para nuestro modelo se pueden definir como el conjunto de tuplas $$(X_1,Y_1),...(X_n,Y_n)$$ en el que para cada valor de $$X_i$$ conocemos el valor de la respuesta $$Y_i$$, llegamos a un conjunto de ecuaciones de necesitamos resolver para los parámetros desconocidos $$\beta_0,\beta_1$$. Utilizando el razonamiento geométrico, la regresión lineal se puede representar como la línea recta que minimiza la distancia a cada uno de las tuplas de entrada de nuestro problema. Esta distancia se puede representar como la diferencia entre el valor real $$Y_i$$ del que disponemos y el valor predicho $$\hat Y_i$$. Esta diferencia se conoce como la suma de los residuos, al ser una diferencia generalmente se empleará dicha suma al cuadrado dando lugar a su nombre en inglés de RSS *(Residual Sum of Squares)*.
+Los datos de entrenamiento que tenemos para nuestro modelo podemos representarlos como el conjunto de tuplas $(X_1,Y_1),...(X_n,Y_n)$ en el que para cada valor del predictor, $X_i$, conocemos el valor real de la respuesta, $Y_i$. De esta manera, necesitaremos encontrar los valores adecuados de los parámetros desconocidos $\beta_0,\beta_1$. 
 
-Por lo tanto, nuestra estimación de los valores reales de $$(\beta_0, \beta_1)$$ se representará como $$(\hat\beta_0,\hat\beta_1)$$. Siendo estos los dos valores concretos que minimizan el resultado de *RSS*:
+Utilizando el razonamiento geométrico, en la regresión lineal simple la solución es la línea recta que minimiza la distancia entre ella y cada una de las tuplas de entrada. Esta distancia se puede representar como la diferencia entre el valor real conocido de nuestra respuesta, $Y_i$, y el valor predicho por nuestro modelo, $\hat Y_i$. 
 
+La diferencia entre ambos valores, $Y_i - \hat Y_i$, se conoce como el residuo. En nuestro caso nos interesará minimizar la suma de todos los residuos a partir de los datos de entrada. Al ser una diferencia, nos encontraremos resultados positivos y negativos que tenderán a anularse, por lo que se emplea el cuadrado de la diferencia a la hora de minimizar esa suma. Este concepto se le denomina como la suma de los residuos al cuadrado, o como encontrarás habitualmente en inglés: RSS *(Residual Sum of Squares)*.
+
+Los valores reales de $(\beta_0, \beta_1)$ únicamente los podríamos conocer si tuviéramos los detalles de todas las tuplas asociadas a nuestro problema; es decir, conociéramos toda la población. Sin embargo, este nunca será el caso, únicamente tendremos una muestra de la población por lo que los valores que obtendremos serán una aproximación a ellos. Por ese motivo los denominaremos como $(\hat\beta_0,\hat\beta_1)$.
+
+Representado de forma matemática, nuestros dos parámetros $(\hat\beta_0,\hat\beta_1)$ serán aquellos que minimicen la suma de los residuos al cuadrado de todas las tuplas que disponemos.
 
 $$ (\hat\beta_0,\hat\beta_1) = \underset{(\beta_0,\beta_1)\in\Re} {\operatorname{arg\,min\,RSS}} (\beta_0,\beta_1) := \underset{(\beta_0,\beta_1)\in\Re} {\operatorname{arg\,min}}(\sum_{i=1}^n(Y_i - \hat Y_i)^2)$$
 
-Si reemplazamos $$\hat Y_i$$ por su definición, nuestro problema quedaría definido como: 
+Reemplazando el valor de nuestra estimación, $\hat Y_i$, por su expresión matemática. El problema que tenemos quedaría planteando de la siguiente manera.
 
-$$ (\hat\beta_0,\hat\beta_1) = \underset{(\beta_0,\beta_1)\in\Re} {\operatorname{arg\,min}}(\sum_{i=1}^n(Y_i - \beta_0 - \beta_1X)^2)  $$
+$$ (\hat\beta_0,\hat\beta_1) = \underset{(\beta_0,\beta_1)\in\Re} {\operatorname{arg\,min}}(\sum_{i=1}^n(Y_i - \hat\beta_0 - \hat\beta_1X)^2)  $$
 
-Nos encontramos ante un problema de optimización en el que buscamos el valor mínimo de la ecuación. Del cálculo numérico sabemos que el mínimo o máximo de una función se da cuando la derivada de la misma es igual a $$0$$. Por lo tanto, el mínimo de dicha expresión para cada uno de nuestros dos parámetros $$(\beta_0, \beta_1)$$ será:
+Nos encontramos ante un problema de optimización en el que buscamos el valor mínimo de esa expresión. Del cálculo numérico sabemos que el mínimo o máximo de una función se da cuando la derivada de la misma es igual a $0$. Por lo tanto, el mínimo de dicha expresión para cada uno de nuestros dos parámetros $(\hat\beta_0, \hat\beta_1)$ quedará definido como:
 
-$$ \frac \partial \beta_0 [\sum_{i=1}^n(Y_i - \beta_0 - \beta_1X)^2)] = 0$$
+$$ \frac \partial{\hat\beta_0} [\sum_{i=1}^n(Y_i - \hat\beta_0 - \hat\beta_1X)^2)] = 0$$
 
-$$ \frac \partial \beta_1 [\sum_{i=1}^n(Y_i - \beta_0 - \beta_1X)^2)] = 0$$
+$$ \frac \partial{\hat\beta_1} [\sum_{i=1}^n(Y_i - \hat\beta_0 - \hat\beta_1X)^2)] = 0$$
 
-El siguiente paso será resolver cada una de estas expresiones por separado. En primer lugar, la derivada en $\beta_0$ será ya que la derivada es una operación lineal por lo que la derivada de una suma es igual a la suma de sus derivadas:
+Por lo tanto, el siguiente paso será resolver cada una de estas expresiones por separado. Comenzaremos primero con la derivada respecto $\beta_0$. Dado que la derivada es una operación lineal, la derivada de una suma se puede representar como la suma de sus derivadas.
  
-$$\frac \partial \beta_0 [\sum_{i=1}^n(Y_i - \beta_0 - \beta_1X)^2)] =  \sum_{i=1}^n [\frac \partial \beta_0 (Y_i - \beta_0 - \beta_1X)^2)] $$
+$$\frac \partial{\hat\beta_0} [\sum_{i=1}^n(Y_i - \hat\beta_0 - \hat\beta_1X)^2)] =  \sum_{i=1}^n [\frac \partial{\hat\beta_0} (Y_i - \hat\beta_0 - \hat\beta_1X)^2)] $$
 
-Para simplificar los siguiente pasos, haremos la siguiente sustitución en la ecuación $$C=Y_i -\beta_1X_i$$, quedándonos que:
+Para simplificar, dado que únicamente nos interesa $\hat\beta_0$, haremos la siguiente sustitución en la ecuación $C=Y_i -\hat\beta_1X_i$.
 
-$$\sum_{i=1}^n [\frac \partial \beta_0 (C - \beta_0)^2)] $$
+$$\sum_{i=1}^n [\frac \partial{\hat\beta_0} (C - \hat\beta_0)^2)] $$
 
-Aplicando la propiedad del cuadrado de la diferencia que indica que $$(a-b)^2 = a^2 - 2ab + b^2$$, nuestra ecuación se transforma en:
+Aplicando la propiedad del cuadrado de la diferencia que indica que $(a-b)^2 = a^2 - 2ab + b^2$, nuestra ecuación se transfomará de la siguiente manera.
 
-$$\sum_{i=1}^n [\frac \partial \beta_0 (C^2 -2C\beta_0 + \beta_0^2)] $$
+$$\sum_{i=1}^n [\frac \partial{\hat \beta_0} (C^2 -2C\hat\beta_0 + \hat\beta_0^2)] $$
 
 Derivando cada uno de los términos de la ecuación nos queda que:
 
-$$\sum_{i=1}^n [\frac \partial \beta_0 (C^2) - \frac \partial \beta_0 (2C\beta_0) + \frac \partial \beta_0(\beta_0^2)] = $$
-$$\sum_{i=1}^n [ 0 - 2C + 2\beta_0] $$
+$$\sum_{i=1}^n [\frac \partial{\hat\beta_0} (C^2) - \frac \partial{\hat\beta_0} (2C\hat\beta_0) + \frac \partial{\hat\beta_0}(\hat\beta_0^2)] = \sum_{i=1}^n [ 0 - 2C + 2\hat\beta_0] $$
 
-Deshaciendo el cambio anterior de $$C=Y_i -\beta_1X_i$$, llegamos a que:
+Deshaciendo el cambio anterior de $C=Y_i -\hat\beta_1X_i$, llegamos a que:
 
-$$-2\sum_{i=1}^n(C) + 2\sum_{i=1}^n(\beta_0) = -2\sum_{i=1}^n(Y_i -\beta_1X_i) + 2n\beta_0$$
+$$-2\sum_{i=1}^n(C) + 2\sum_{i=1}^n\hat\beta_0 = -2\sum_{i=1}^n(Y_i -\hat\beta_1X_i) + 2n\hat\beta_0$$
 
 Obteniendo finalmente que:
 
-$$2(n\beta_0 -\sum_{i=1}^n(Y_i) + \beta_1\sum_{i=1}^n(X_i))$$
+$$2(n\hat\beta_0 -\sum_{i=1}^n(Y_i) + \hat\beta_1\sum_{i=1}^n(X_i))$$
 
-Nos queda por lo tanto igualar el resultado de nuestra derivada parcial en $$\beta_0$$ a $$0$$:
+Una vez que llegamos a esta expresión de la derivada, nos queda por lo tanto igualar el resultado a $0$ y despejar $\hat\beta_0$.
 
-$$2(n\beta_0 -\sum_{i=1}^n(Y_i) + \beta_1\sum_{i=1}^n(X_i)) = 0$$
+$$2(n\hat\beta_0 -\sum_{i=1}^n(Y_i) + \hat\beta_1\sum_{i=1}^n(X_i)) = 0$$
 
-$$\beta_0 = \frac 1 n {\sum_{i=1}^n(Y_i)} - \frac 1 n \beta_1\sum_{i=1}^n(X_i) $$
+$$\hat\beta_0 = \frac 1 n {\sum_{i=1}^n(Y_i)} - \frac 1 n \hat\beta_1\sum_{i=1}^n(X_i) $$
 
-Siendo $$\frac 1 n {\sum_{i=1}^n(A_i)}$$ la expresión de la media aritmética podemos resumir el resultado en:
+Siendo $\frac 1 n {\sum_{i=1}^n(A_i)}$ la expresión de la media aritmética podemos reducir la expresión analítica de $\beta_0$ a su versión final.
 
-$$\beta_0 = \hat Y - \beta_1 \hat X $$
+$$\hat\beta_0 = \bar Y - \hat\beta_1 \bar X $$
 
-El siguiente paso será hacer lo mismo para resolverlo en $$\beta_1$$
+A continuación, tendremos que realizar el mismo proceso para resolver la derivada parcial respecto a $\hat\beta_1$.
 
-$$\frac \partial \beta_1 [\sum_{i=1}^n(Y_i - \beta_0 - \beta_1 X_i)^2] =  \sum_{i=1}^n [\frac \partial \beta_1 (Y_i - \beta_0 - \beta_1X_i)^2] $$
+$$\frac \partial{\hat\beta_1} [\sum_{i=1}^n(Y_i - \hat\beta_0 - \hat\beta_1 X_i)^2] =  \sum_{i=1}^n [\frac \partial{\hat\beta_1} (Y_i - \hat\beta_0 - \hat\beta_1X_i)^2] $$
 
-Si reemplazamos el valor de $$\beta_0$$ nos quedará que:
+Si reemplazamos el valor anterior obtenido de $\hat\beta_0$ en la ecuación, nos quedará:
 
-$$\sum_{i=1}^n [\frac \partial \beta_1 (Y_i - \hat Y - \beta_1 \hat X - \beta_1X_i)^2] = \sum_{i=1}^n [\frac \partial \beta_1 (Y_i - \hat Y - \beta_1 (\hat X - X_i) )^2] $$
+$$\sum_{i=1}^n [\frac \partial{\hat\beta_1} (Y_i - \bar Y + \hat\beta_1 \bar X - \hat\beta_1X_i)^2] = \sum_{i=1}^n [\frac \partial{\hat\beta_1} (Y_i - \bar Y - \hat\beta_1 ( X_i - \bar X ) )^2] $$
 
 Aplicando de nuevo la propiedad del cuadrado de la diferencia nuestra ecuación se transforma en:
 
-$$\sum_{i=1}^n [\frac \partial \beta_1 ((Y_i - \hat Y)^2 - 2(Y_i - \hat Y)\beta_1(\hat X - X_i) + \beta_1^2 (\hat X - X_i)^2) ] $$
+$$\sum_{i=1}^n [\frac \partial{\hat\beta_1} ((Y_i - \bar Y)^2 - 2(Y_i - \bar Y)\hat\beta_1( X_i - \bar X ) + \hat\beta_1^2 ( X_i - \bar X )^2) ] $$
 
 Derivando cada uno de los términos de la ecuación nos queda que:
 
-$$\sum_{i=1}^n [0 - 2(Y_i - \hat Y)(\hat X - X_i) + 2\beta_1 (\hat X - X_i)^2) ] $$
+$$\sum_{i=1}^n [0 - 2(Y_i - \bar Y)( X_i - \bar X ) + 2\hat\beta_1 ( X_i - \bar X )^2) ] $$
 
-Nos queda por lo tanto igualar el resultado de nuestra derivada parcial en $$\beta_1$$ a $$0$$:
+Nos queda por lo tanto igualar el resultado de nuestra derivada parcial en $\hat\beta_1$ a $0$:
 
-$$-2\sum_{i=1}^n [(Y_i - \hat Y)(\hat X - X_i) - \beta_1 (\hat X - X_i)^2] = 0$$
+$$-2\sum_{i=1}^n [(Y_i - \bar Y)( X_i - \bar X ) - \hat\beta_1 ( X_i - \bar X )^2] = 0$$
 
-Obteniéndose que
+$$ \sum_{i=1}^n [(Y_i - \bar Y)( X_i - \bar X )]  - \sum_{i=1}^n [\hat\beta_1 ( X_i - \bar X )^2] = 0$$
 
-$$ \sum_{i=1}^n [(Y_i - \hat Y)(\hat X - X_i)]  - \sum_{i=1}^n [\beta_1 (\hat X - X_i)^2] = 0$$
+Si despejamos respecto a $\hat\beta_1$
 
-Si despejamos respecto a $$\beta_1$$
+$$ \hat\beta_1 =  \frac{\sum_{i=1}^n [(Y_i - \bar Y)( X_i - \bar X )]}{\sum_{i=1}^n [( X_i - \bar X )^2]} $$
 
-$$ \beta_1 =  \frac{\sum_{i=1}^n [(Y_i - \hat Y)(\hat X - X_i)]}{\sum_{i=1}^n [(\hat X - X_i)^2]} $$
+Multiplicando y dividiendo por $\frac 1 n$ las expresiones del numerador y denominador coinciden con la $Cov(X,Y)$ y la $Var(X)$ respectivamente.
 
-Multiplicando y dividiendo por $$\frac 1 n$$ nos quedará que
+$$ \hat\beta_1 =  \frac{\frac 1 n \sum_{i=1}^n [(Y_i - \bar Y)( X_i - \bar X )]}{\frac 1 n \sum_{i=1}^n [( X_i - \bar X )^2]} = \frac{Cov(X,Y)}{Var(X)} $$
 
-$$ \beta_1 =  \frac{\frac 1 n \sum_{i=1}^n [(Y_i - \hat Y)(\hat X - X_i)]}{\frac 1 n \sum_{i=1}^n [(\hat X - X_i)^2]} = \frac{Cov(X,Y)}{Var(X)} $$
+Por lo tanto, para la regresión lineal simple, los dos parámetros se pueden obtener como:
+
+$$\hat\beta_0 = \bar Y - \hat\beta_1 \bar X $$
+
+$$ \hat\beta_1 = \frac{Cov(X,Y)}{Var(X)} $$
 
 
 #### Resolución numérica
