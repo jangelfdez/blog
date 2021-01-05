@@ -142,6 +142,93 @@ $$\hat\beta_0 = \bar Y - \hat\beta_1 \bar X $$
 
 $$ \hat\beta_1 = \frac{Cov(X,Y)}{Var(X)} $$
 
+Tras obtener el resultado para una regresión lineal, es el momento ahora de obtener la solución analítica en el caso de una regresión lineal múltiple. En este caso, en lugar de un único predictor, tendremos $n$ predictores.
+
+$$ Y = \beta_0 + \beta_1 X + ... + \beta_n X_n + \epsilon = \beta_0 + \sum_{i=1}^n \beta_iX_i + \epsilon  $$
+
+Los datos de entrenamiento en este caso serán $(X_{11}, X_{12}, \dots,X_{1n},Y_1), \dots ,(X_{n1}, X_{n2}, \dots,X_{nn},Y_n)$, por lo que necesitaremos encontrar los valores adecuados de los parámetros desconocidos $(\beta_0, \dots, \beta_n)$. 
+
+Siguiendo el mismo razonamiento geométrico, en la regresión lineal múltiple la solución es la intersección de los $n$ hiperplanos definidos por cada uno de los predictores. Mientras que en tres dimensiones es interpretable gráficamente, para valores de $n$ mayores no es posible. Aún así, siguendo siendo aplicable la teoría de los residuos anterior en la que buscaremos minimizar la diferencia entre el valor real conocido de nuestra respuesta, $Y_i$, y el valor predicho por nuestro modelo, $\hat Y_i$. 
+
+
+$$ (\hat\beta_0, \dots, \hat\beta_p) = \underset{(\beta_0, \dots, \beta_p)\in\Re} {\operatorname{arg\,min\,RSS}} (\beta_0,\dots,\beta_p) := \underset{(\beta_0, \dots, \beta_p)\in\Re} {\operatorname{arg\,min}}(\sum_{i=1}^n(Y_i - \hat Y_i)^2)$$
+
+Si tenemos en cuenta $r_i = Y_i - \hat Y_i$, siendo $r_i$ el residuo para la tupla $i$. 
+
+$$ (\hat\beta_0, \dots, \hat\beta_p) = \underset{(\beta_0, \dots, \beta_p)\in\Re} {\operatorname{arg\,min\,RSS}} (\beta_0,\dots,\beta_p) := \underset{(\beta_0, \dots, \beta_p)\in\Re} {\operatorname{arg\,min}}(\sum_{i=1}^n r_i^2)$$
+
+Podemos comprobar que $\sum_{i=1}^n r_i^2 = r^Tr$ ya que:
+
+$$ r^Tr = 
+\begin{bmatrix}
+r_1 & r_2 & \dots & r_p \\
+\end{bmatrix}	
+\begin{bmatrix}
+r_1 \\
+r_2 \\
+\vdots \\
+r_p 
+\end{bmatrix}	= \sum_{i=1}^n r_i^2$$
+
+Por lo tanto, igual que en el caso de la regresión lineal simple tendremos que minimizar la expresión respecto a $\beta$. Sin embargo, no resulta práctico a la hora de operar matemáticamente con ello. Trabajaremos en su lugar con su representación matricial. Podemos representar las ecuaciones del sumatorio en $i$ de la siguiente manera.
+
+$$
+\begin{bmatrix}
+\hat Y_1 \\
+\hat Y_2 \\
+\vdots \\
+\hat Y_n 
+\end{bmatrix}	= 
+
+\begin{bmatrix}
+1 & X_{11} & X_{12} & \dots & X_{1p}\\
+1 & X_{21} & X_{22} & \dots & X_{2p}\\
+\vdots & \vdots & \vdots & \ddots & \vdots \\
+1 & X_{n1} & X_{n2} & \dots & X_{np}
+\end{bmatrix}
+\begin{bmatrix}
+\hat\beta_0 \\
+\hat\beta_1 \\
+\vdots \\
+\hat\beta_p
+\end{bmatrix} +
+
+\begin{bmatrix}
+\epsilon_1 \\
+\epsilon_2 \\
+\vdots \\
+\epsilon_n
+\end{bmatrix}
+$$
+
+En versión más compacta, quedaría como:
+
+$$ \boldsymbol{\hat Y = X \hat\beta + \epsilon} $$
+
+Por lo tanto, nuestra expresión pasaría a:
+
+$$ (\hat\beta_0, \dots, \hat\beta_p) = \underset{(\beta_0, \dots, \beta_p)\in\Re} {\operatorname{arg\,min}}( \boldsymbol{(Y_i - \hat Y_i)^T(Y_i - \hat Y_i)})$$ 
+
+$$ \frac \partial{\hat\beta} [\boldsymbol{(Y_i - \hat Y_i)^T(Y_i - \hat Y_i)}] = \frac \partial{\hat\beta} [\boldsymbol{(Y_i - X\hat\beta)^T(Y_i - X\hat\beta)}] = 0$$
+
+Aplicando cálculo matricial desarrollaremos la expresión a derivar
+
+$$ \boldsymbol{(Y_i - X\hat\beta)^T(Y_i - X\hat\beta)=(Y_i^T - \hat\beta^TX^T)(Y_i - X\hat\beta)=} $$
+
+$$\boldsymbol{Y_i^TY_i - Y_i^TX\hat\beta - \hat\beta^TX^TY_i + \hat\beta^TX^TX\hat\beta} $$
+
+Teniendo en cuenta que $\boldsymbol{(Y_i^TX\hat\beta) = (\hat\beta^TX^TY_i)^T}$ y que su dimensión es igual a $(1 \times n)(n \times  p)(p\times1) = 1$, llegamos a la conclusión de que el valor de ella y su traspuesta es el mismo por lo que entonces se suman entre sí. La expresión resultante quedaría
+
+$$\boldsymbol{Y_i^TY_i - 2\hat\beta^TX^TY_i + \hat\beta^TX^TX\hat\beta} $$
+
+Por lo tanto
+
+$$ \frac \partial{\hat\beta} [\boldsymbol{Y_i^TY_i - 2\hat\beta^TX^TY_i + \hat\beta^TX^TX\hat\beta}] = \boldsymbol{0 - 2X^TY_i + 2X^TX\hat\beta} = 0 $$
+
+Asumiendo que la matrix $X$ es invertible, podemos calcular los parámetros $\hat\beta$ de la siguiente manera.
+
+$$ \boldsymbol{\hat\beta = (X^TX)^{-1}X^TY_i} $$
+
 
 #### Resolución numérica
 
