@@ -229,8 +229,12 @@ Asumiendo que la matrix $X$ es invertible, podemos calcular los parámetros $\ha
 
 $$ \boldsymbol{\hat\beta = (X^TX)^{-1}X^TY_i} $$
 
+El cálculo de la matriz inversa para matrices de pequeña dimensión es fácil de calcular si cumple las propiedades necesarias para ser invertible. Sin embargo, cuando la dimensión de la matriz aumenta hasta miles, cientos de miles o millones de filas y columnas esta aproximación no es tan sencilla. Es por eso que es muchas veces más fácil resolve el sistema de ecuaciones $\boldsymbol{AX=B}$ que hacer el cálculo de la inversa. 
+
+No entraré en más detalles al respecto pero sí que os recomiendo leer el artículo ["Why Shouldn't I Invert That Matrix?" de Gregory Gundersen ](http://gregorygundersen.com/blog/2020/12/09/matrix-inversion/) y las referencias que se incluyen al artículo ["Don’t invert that matrix"](https://www.johndcook.com/blog/2010/01/19/dont-invert-that-matrix/), al artículo ["Don’t invert that matrix” – why and how"](https://www.r-bloggers.com/2015/07/dont-invert-that-matrix-why-and-how/) o a esta conversación en [Hacker News](https://news.ycombinator.com/item?id=11681893).
 
 #### Resolución numérica
+
 
 
 ### ¿Qué conclusiones puedo extraer a partir de los resultados?
