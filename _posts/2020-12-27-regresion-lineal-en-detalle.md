@@ -231,14 +231,27 @@ Asumiendo que la matrix $X$ es invertible, podemos calcular los parámetros $\ha
 
 $$ \begin{equation} \boldsymbol{\hat\beta = (X^TX)^{-1}X^TY_i}  \label{eq:betamlr} \end{equation} $$
 
-
-El cálculo de la matriz inversa para matrices de pequeña dimensión es fácil de calcular si cumple las propiedades necesarias para ser invertible. Sin embargo, cuando la dimensión de la matriz aumenta hasta miles, cientos de miles o millones de filas y columnas esta aproximación no es tan sencilla. Es por eso que es muchas veces más fácil resolve el sistema de ecuaciones $\boldsymbol{AX=B}$ que hacer el cálculo de la inversa. 
+El cálculo de la matriz inversa para matrices de pequeña dimensión es fácil de calcular si cumple las propiedades necesarias para ser invertible. Sin embargo, cuando la dimensión de la matriz aumenta hasta miles, cientos de miles o millones de filas y columnas esta aproximación no es tan sencilla. Es por eso que es muchas veces más fácil resolve el sistema de ecuaciones $\boldsymbol{Ax=b}$ que hacer el cálculo de la inversa. 
 
 No entraré en más detalles al respecto pero sí que os recomiendo leer el artículo ["Why Shouldn't I Invert That Matrix?" de Gregory Gundersen ](http://gregorygundersen.com/blog/2020/12/09/matrix-inversion/) y las referencias que se incluyen al artículo ["Don’t invert that matrix"](https://www.johndcook.com/blog/2010/01/19/dont-invert-that-matrix/), al artículo ["Don’t invert that matrix” – why and how"](https://www.r-bloggers.com/2015/07/dont-invert-that-matrix-why-and-how/) o a esta conversación en [Hacker News](https://news.ycombinator.com/item?id=11681893).
 
 #### Resolución numérica
 
+Dado que la aproximación analítica prácticamente es solo útil en el caso de la regresión lineal simple, es necesario buscar una alternativa para problemas de regresión lineal más complejos. Partiendo de la expresión $\eqref{eq:betamlr}$ que obtuvimos en el apartado anterior, podemos representarla en la forma general $\boldsymbol{Ax=b}$. De esta manera, nuestro problema quedaría enunciado de la siguiente manera.
 
+$$ \boldsymbol{(X^TX)\hat\beta = X^TY_i} $$
+
+Existen diferentes técnicas a la hora de resolver este sistema de ecuaciones. No entraremos en detalle de todas ellas en este artículo ya que nos saldríamos del objetivo principal y entraríamos en el territorio del álgebra lineal. Sin embargo, es interesante hacer una revisión de cómo lo resuelve uno de los frameworks más utilizados en el área del aprendizaje automático: [Scikit-learn](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html#sklearn.linear_model.LinearRegression).
+
+En este caso concreto, el modelo que expone Scikit-learn envuelve el método de cálculo del problema *Ordinary Least Squares* dentro del paquete de álgebra lineal de [SciPy](https://docs.scipy.org/doc/scipy/reference/generated/scipy.linalg.lstsq.html) (scipy.linalg.lstsq). Si revisamos la documentación de SciPy de éste método, podemos ver que su objetivo es calcular la solución de mínimos cuadrados de la ecuación $\boldsymbol{Ax=b}$ obteniendo el vector $x$ y minimizando su norma euclídea, $\|\|b-Ax\|\|_2$.
+
+Para realizar esta minimización, este método de SciPy recubre a su vez la implementación en Fortran 90 de la librería [LAPACK](http://performance.netlib.org/lapack/) para [problemas líneales de mínimos cuadradros](https://www.netlib.org/lapack/lug/node27.html#tabdrivellsq). El método *scipy.linalg.lstsq* permite escoger entre tres posibles opciones a la hora de realizar el cálculo:
+
+- ***[gelss](http://www.netlib.org/lapack/explore-html/d7/d3b/group__double_g_esolve_gaa6ed601d0622edcecb90de08d7a218ec.html#gaa6ed601d0622edcecb90de08d7a218ec)***: emplea la descomposición en valores singulares de la matriz $A$.
+- ***[gelsd](http://www.netlib.org/lapack/explore-html/d7/d3b/group__double_g_esolve_ga94bd4a63a6dacf523e25ff617719f752.html#ga94bd4a63a6dacf523e25ff617719f752)***: emplea también la descomposición en valores singulares de la matriz $A$ pero en este caso con un algoritmo de divide y vencerás.
+- ***[gelsy](http://www.netlib.org/lapack/explore-html/d7/d3b/group__double_g_esolve_ga385713b8bcdf85663ff9a45926fac423.html#ga385713b8bcdf85663ff9a45926fac423)***: emplea una factorización ortogonal completa de la matriz $A$
+
+Si queréis seguir profundizando más en los detalles específicos os recomiendo revisar cada uno de los artículos de la documentación enlazados anteriormente. Por cada función incluyen una breve introducción donde explican a alto nivel la implementación. Si no es suficiente y existe alguna duda, el siguiente paso sería revisar un buen libro de álgebra lineal.
 
 ### ¿Qué conclusiones puedo extraer a partir de los resultados?
 
