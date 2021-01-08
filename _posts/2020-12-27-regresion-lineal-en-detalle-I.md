@@ -1,16 +1,27 @@
 ---
 layout: post
-title: "Regresión lineal en detalle, los primeros pasos en Machine Learning"
+title: "Regresión lineal en detalle, los primeros pasos en Machine Learning (I)"
 author: "José Ángel Fernández"
 categories: blog
 tags: [machine learning, regresion lineal]
 image: machinelearning.jfif
 ---
 
+El primer paso para cualquier persona que quiera empezar con el Aprendizaje Automático o *Machine Learning* es bastante probable que sea la regresión lineal. Si realmente su uso entra en la categoría del Aprendizaje Automático o, en su lugar, es simplemente una herramienta de modelado estadístico daría para otra conversación. Yo personalmente me decanto más por la versión del *Machine Learning* como la mezcla entre la estadística y la probabilidad, algo más allá de ese halo místico que parece envolver a todo lo relacionado con la Inteligencia Artificial. Sin embargo, visto así parece que se le quita toda la magia y la mercadotecnia.
+
+Recientemente acabé el [Máster Universatrio en Métodos Análiticos para Datos Masivos: Big Data](https://www.uc3m.es/master/big-data) de la Universidad Carlos III. Una forma de salir del día a día en el mundo de la infraestructura y el despliegue de aplicaciones en el que he estado los últimos diez años, al tan relevante nuevo mundo del dato, la piedra angular de las organizaciones para los próximos años. 
+
+Trabajar y estudiar no es algo sencillo y una de las cosas que me arrepiento es no poder haber disfrutado de más tiempo para bajar al detalle en los conceptos y las técnicas que nos enseñaron. Como por ejemplo, el motivo detrás de este artículo: conocer más en profundidad los detalles que hay detrás de una regresión lineal, más allá de la facilidad que algunas librerías como Scikit-learn nos proporciona con su *split*, *fit* y *predict*. 
+
+En esta primera parte del artículo la idea es conocer qué tipo de problemas son candidatos para aplicar una regresión lineal, qué condiciones tienen que cumplir los datos de los que disponemos para que realmente el resultado del modelo tenga algún valor para sacar conclusiones y las opciones matemáticas a la hora de resolverlo.
+
 ### ¿Qué problemas son candidatos para una regresión lineal?
 
-Y = respuesta
-X = predictores
+Los modelos de aprendizaje automático basados en el uso de una regresión lineal se emplean para predecir el valor de una variable respuesta, $Y$, a un conjunto de variables denominadas predictores, $X_i$. También se le conoce respectivamente como variable dependiente y variables independientes. Como bien indica su nombre, la relación entre ellas será una relación lineal en los parámetros y se puede expresar según la ecuación \eqref{eq:rl}.
+
+$$ \begin{equation}  Y = \beta_0 + \beta_1 X + ... + \beta_p X_p + \epsilon = \beta_0 + \sum_{i=1}^p \beta_iX_i + \epsilon  \label{eq:rl}\end{equation}$$
+
+Estos parámetros $\beta_i$ serán los que tendremos que obtener a partir de los datos disponibles de nuestro problema.
 
 ### ¿Puedo utilizar una regresión lineal con los datos que tengo?
 
@@ -253,11 +264,3 @@ Para realizar esta minimización, este método de SciPy recubre a su vez la impl
 
 Si queréis seguir profundizando más en los detalles específicos os recomiendo revisar cada uno de los artículos de la documentación enlazados anteriormente. Por cada función incluyen una breve introducción donde explican a alto nivel la implementación. Si no es suficiente y existe alguna duda, el siguiente paso sería revisar un buen libro de álgebra lineal.
 
-### ¿Qué conclusiones puedo extraer a partir de los resultados?
-
-
-### ¿Qué confianza puedo tener en los valores obtenidos?
-
-### ¿Es bueno mi modelo o no?
-
-### De todos los modelos, ¿cuál es el que debo de escoger?
