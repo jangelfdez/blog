@@ -13,7 +13,7 @@ Recientemente acabé el [Máster Universatrio en Métodos Análiticos para Datos
 
 Trabajar y estudiar no es algo sencillo y una de las cosas que me arrepiento es no poder haber disfrutado de más tiempo para bajar al detalle en los conceptos y las técnicas que nos enseñaron. Como por ejemplo, el motivo detrás de este artículo: conocer más en profundidad los detalles que hay detrás de una regresión lineal, más allá de la facilidad que algunas librerías como Scikit-learn nos proporciona con su *split*, *fit* y *predict*. 
 
-En esta primera parte del artículo la idea es conocer qué tipo de problemas son candidatos para aplicar una regresión lineal, qué condiciones tienen que cumplir los datos de los que disponemos para que realmente el resultado del modelo tenga algún valor para sacar conclusiones y las opciones matemáticas a la hora de resolverlo.
+En esta primera parte del artículo la idea es conocer qué tipo de problemas son candidatos para aplicar una regresión lineal, qué condiciones tienen que cumplir los datos de los que disponemos para que realmente el resultado del modelo tenga algún valor para sacar conclusiones y las opciones matemáticas a la hora de resolverlo. Es posible que información similar aparezca por la Wikipedia u otros sitios webs; sin embargo, leerlo no implica saberlo por lo que no hay nada mejor que intentar explicarlo para ver hasta qué punto se ha comprendido.
 
 ### ¿Qué problemas son candidatos para una regresión lineal?
 
@@ -21,7 +21,9 @@ Los modelos de aprendizaje automático basados en el uso de una regresión linea
 
 $$ \begin{equation}  Y = \beta_0 + \beta_1 X + ... + \beta_p X_p + \epsilon = \beta_0 + \sum_{i=1}^p \beta_iX_i + \epsilon  \label{eq:rl}\end{equation}$$
 
-Estos parámetros $\beta_i$ serán los que tendremos que obtener a partir de los datos disponibles de nuestro problema.
+Estos parámetros $\beta_i$ serán los que tendremos que obtener a partir de los datos disponibles de nuestro problema. La linealidad de la regresión va asociado a dichos parámetros, no a las variables predictoras. Es decir, el siguiente caso también es una regresión lineal aunque pudiera parecer lo contrario ya que sus parámetros son lineales.
+
+$$ Y = \beta_0 + \beta_1 \log X + ... + \beta_p X_p^2 + \epsilon $$
 
 ### ¿Puedo utilizar una regresión lineal con los datos que tengo?
 
