@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Regresión lineal en detalle, los primeros pasos en Machine Learning (I)"
+title: "Regresión lineal en detalle, los primeros pasos en Machine Learning"
 author: "José Ángel Fernández"
 categories: blog
 tags: [machine learning, regresion lineal]
@@ -13,7 +13,7 @@ Recientemente acabé el [Máster Universatrio en Métodos Análiticos para Datos
 
 Trabajar y estudiar no es algo sencillo y una de las cosas que me arrepiento es no poder haber disfrutado de más tiempo para bajar al detalle en los conceptos y las técnicas que nos enseñaron. Como por ejemplo, el motivo detrás de este artículo: conocer más en profundidad los detalles que hay detrás de una regresión lineal, más allá de la facilidad que algunas librerías como Scikit-learn nos proporciona con su *split*, *fit* y *predict*. 
 
-En esta primera parte del artículo la idea es conocer qué tipo de problemas son candidatos para aplicar una regresión lineal, qué condiciones tienen que cumplir los datos de los que disponemos para que realmente el resultado del modelo tenga algún valor para sacar conclusiones y las opciones matemáticas a la hora de resolverlo. Es posible que información similar aparezca por la Wikipedia u otros sitios webs; sin embargo, leerlo no implica saberlo por lo que no hay nada mejor que intentar explicarlo para ver hasta qué punto se ha comprendido.
+En este artículo la idea es conocer qué tipo de problemas son candidatos para aplicar una regresión lineal, qué condiciones tienen que cumplir los datos de los que disponemos para que realmente el resultado del modelo tenga algún valor para sacar conclusiones y las opciones matemáticas a la hora de resolverlo. Es posible que información similar aparezca por la Wikipedia u otros sitios webs; sin embargo, leerlo no implica saberlo por lo que no hay nada mejor que intentar explicarlo para ver hasta qué punto se ha comprendido.
 
 ### ¿Qué problemas son candidatos para una regresión lineal?
 
@@ -25,6 +25,8 @@ Estos parámetros $\beta_i$ serán los que tendremos que obtener a partir de los
 
 $$ Y = \beta_0 + \beta_1 \log X + ... + \beta_p X_p^2 + \epsilon $$
 
+En cuanto a $$\epsilon$$, se considera una variable aleatoria que modela la interferencia de otros posibles predictores que afecten a nuestra relación lineal pero que no son considerados en nuestro modelo. Es posible verlo como el *error* de nuestra predicción respecto a la realidad si consideráramos todas las variables que afectarían a nuestro problema; en la mayor parte de los casos esas variables no incluídas ni siquiera son conocidas. Dicho error tendrá una media nula y es independiente de los predictores $X_p$.
+
 ### ¿Puedo utilizar una regresión lineal con los datos que tengo?
 
 Una regresión lineal asume que los datos cumplen una serie de propiedades probabilísticas que nos permitan extraer conclusiones válidas a partir de los resultados obtenidos. Es decir, que las predicciones que realicemos con el modelo se ajusten a nuestro escenario real y tengan algún sentido.
@@ -35,17 +37,35 @@ Las propiedades que tienen que cumplirse son: linealidad, homocedasticidad, norm
 
 #### Linealidad
 
-Cuando hablamos de *linealidad*, nos referimos a que la variable que predecimos debe de mantener una relación lineal con cada una de las variables predictoras. Èxpresado de forma matemática, la esperanza de la variable predicha equivle a una combinación lineal de las predictoras.
+Cuando hablamos de *linealidad*, nos referimos a que la variable que predecimos debe de mantener una relación lineal con cada una de las variables predictoras. Expresado de forma matemática, la esperanza de la variable predicha equivale a una combinación lineal de las predictoras.
 
-$$ E[Y | X_1 = x_1, ..., X_p = x_p] = \beta_0 + \beta_1 x_i + ... + \beta_p x_p ] $$
+$$ \mathbb{E}[Y | X_1 = x_1, ..., X_p = x_p] = \beta_0 + \beta_1 x_i + ... + \beta_p x_p  $$
+
+Esto es así ya que como mencionabamos anteriormente, la media del error es nula
+
+$$ \mathbb{E}[\epsilon |X_1 = x_1, ..., X_p = x_p ] = 0 $$
+
+En el caso de una regresión lineal simple con un solo predictor, la forma más sencillo de comprobarlo es utilizando un diagrama de dispersión (*scatterplot*) en el que se apreciará la relación entre el predictor y la variable respuesta. Sin embargo, en el caso de una regresión lineal múltiple, su forma de validarlo es comparando en un diagrama similar los residuos con el valor predicho. Más detalles de lo que es un residuo se pueden encontrar más adelante.  
 
 #### Homocedasticidad
 
-#### Normalidad
+Probablemente de las palabras más trabalenguas que conozco para decirla bien a la primera. Sin embargo, su explicación es más sencilla. Los residuos deben de tener una varianza constante para cualquier valor de entrada. Expresado de forma matemática.
+
+$$ \mathbb{Var}[\epsilon | X_1 = x_1, ..., X_p = x_p] =\sigma^2  $$
+
+Es posible comprobarlo igual que antes con un diagrama de dispersión de los residuos comparado con los valores predichos. Su imcumplimiento provoca que no se pueda predecir de forma certera los errores de las predicciones que realiza nuestro modelo.
+
+#### Normalidad 
+
+A partir de lo que hemos visto en los dos puntos anteriores tenemos esta tercera condición.
+
+$$ \epsilon \sim \mathcal{N}(0,\sigma^2) $$
+
+Es decir, los errores siguen una distribución normal de media nula y varianza $\sigma^2$. Si esto no sucede, afecta a la hora de calcular los intervalos de confianza y considerar las probabilidades de que el error de una predicción excede un valor particular. 
 
 #### Independencia de los errores
 
-
+Los residuos obtenidos no deben de tener ninguna correlación entre ellos. Es decir, son independientes. Generalmente esto sucede en casos en los que los datos proceden de algún tipo de serie temporal en el que un valor tiene dependencia o correlación con los anteriores o posteriores. La forma más sencillo de diagnosticarlo es a través de un gráfico con las autocorrelaciones de los residuos. La mayor parte de los valores deberían caer entorno al cero.
 
 ### ¿Resolución analítica o numérica?
 
